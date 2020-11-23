@@ -25,7 +25,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. :
 
 ## Architecture
 
-![Architecture](c4/images/architecture_graph.png)
+![Architecture](architectures/architecture_graph.png)
 
 <!-- REQUIREMENTS -->
 ## Requirements

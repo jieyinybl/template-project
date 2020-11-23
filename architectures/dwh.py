@@ -46,6 +46,7 @@ dwh_container.add_component(scheduler)
 
 internal_user.add_usage(dwh_app, 'Makes requests')
 dwh_app.add_usage(metabase, 'Copies data to')
-#system2.add_usage(invoice_extractor_application, 'Updates records')
-#ocr.add_usage(model, 'Sends OCR output in XML')
-#
+
+from c4.graph import c4_graph
+
+c4_graph(dwh)

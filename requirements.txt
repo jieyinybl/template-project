@@ -1,0 +1,1 @@
+-e git+https://github.com/jieyinybl/c4-architecture.git@0.1#egg=c4-architecture
