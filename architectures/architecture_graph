@@ -1,68 +1,111 @@
 digraph {
-	node [fontsize=6 shape=record]
+	graph [fontsize=6]
+	node [fontcolor=white fontsize=6 shape=box style=filled]
 	edge [fontsize=6 labelfontsize=6]
 	compound=true dpi=400
 	"Internal users
+[Person]
 
-Employees in the organisation."
+Employees in the organisation." [fillcolor="#08427B"]
 	"Internal users
+[Person]
 
 Employees in the organisation." -> "DWH application
+[Software System]
 
-System running data pipelines (integrating, consolidating and transforming data)." [label="Makes requests"]
+System running data pipelines (integrating, consolidating and transforming data)." [label="Makes requests
+[HTTPS]"]
 	"DWH application
+[Software System]
 
-System running data pipelines (integrating, consolidating and transforming data)."
-	"DWH
-
-DWH." -> "Pipelines
-
-ETL (Extract, transform, load) pipelines."
-	"DWH
-
-DWH." -> "Scheduler
-
-Scheduling ETL jobs."
-	subgraph cluster_DWH {
-		node [style=filled]
-		color=blue
-		"Pipelines
-
-ETL (Extract, transform, load) pipelines."
-		"Scheduler
-
-Scheduling ETL jobs."
-		label=DWH
-	}
-	subgraph cluster_PostgreSQL {
-		node [style=filled]
-		color=blue
-		label=PostgreSQL
-	}
+System running data pipelines (integrating, consolidating and transforming data)." [fillcolor="#1168BD"]
 	"DWH application
+[Software System]
 
-System running data pipelines (integrating, consolidating and transforming data)." -> "Metabase dashboards
+System running data pipelines (integrating, consolidating and transforming data)." -> "Data pipelines
+[Container]
 
-Frontend BI application." [label="Copies data to"]
+ETL (Extract, transform, load) pipelines." [lhead="cluster_DWH application"]
+	"Data pipelines
+[Container]
+
+ETL (Extract, transform, load) pipelines." -> "ETL database
+[Container]
+
+Postgres database storing the data for ETL jobs." [label="Writes to"]
+	"Data pipelines
+[Container]
+
+ETL (Extract, transform, load) pipelines." -> "Schema management
+[Component]
+
+Definition of schema and metabase in DWH." [lhead="cluster_Data pipelines"]
+	subgraph "cluster_Data pipelines" {
+		label="Data pipelines [Container]" style=dotted
+		"Schema management
+[Component]
+
+Definition of schema and metabase in DWH." [fillcolor="#85BBF0" style=filled]
+		"Generation of artifacts
+[Component]
+
+Automatic generation of artifacts in the ETL pipeline." [fillcolor="#85BBF0" style=filled]
+	}
+	"ETL database
+[Container]
+
+Postgres database storing the data for ETL jobs." -> "Frontend database
+[Container]
+
+Postgres database storing report ready data." [label="Copies data to
+[JDBC]"]
+	subgraph "cluster_ETL database" {
+		label="ETL database [Container]" style=dotted
+	}
+	"Scheduler
+[Container]
+
+Jenkins service to schedule the run of pipelines." -> "Data pipelines
+[Container]
+
+ETL (Extract, transform, load) pipelines." [label=Triggers]
+	subgraph cluster_Scheduler {
+		label="Scheduler [Container]" style=dotted
+	}
 	subgraph "cluster_DWH application" {
-		node [style=filled]
-		color=lightgrey label="DWH application" style=filled
-		"DWH application
+		label="DWH application [Software System]" style=dotted
+		"Data pipelines
+[Container]
 
-System running data pipelines (integrating, consolidating and transforming data)." -> "DWH
+ETL (Extract, transform, load) pipelines." [fillcolor="#438DD5" style=filled]
+		"ETL database
+[Container]
 
-DWH."
-		"DWH application
+Postgres database storing the data for ETL jobs." [fillcolor="#438DD5" style=filled]
+		"Scheduler
+[Container]
 
-System running data pipelines (integrating, consolidating and transforming data)." -> "PostgreSQL
-
-Database storing the data for ETL jobs."
+Jenkins service to schedule the run of pipelines." [fillcolor="#438DD5" style=filled]
 	}
 	"Metabase dashboards
+[Software System]
 
-Frontend BI application."
+Frontend BI application." [fillcolor="#1168BD"]
+	"Metabase dashboards
+[Software System]
+
+Frontend BI application." -> "Frontend database
+[Container]
+
+Postgres database storing report ready data." [lhead="cluster_Metabase dashboards"]
+	subgraph "cluster_Frontend database" {
+		label="Frontend database [Container]" style=dotted
+	}
 	subgraph "cluster_Metabase dashboards" {
-		node [style=filled]
-		color=lightgrey label="Metabase dashboards" style=filled
+		label="Metabase dashboards [Software System]" style=dotted
+		"Frontend database
+[Container]
+
+Postgres database storing report ready data." [fillcolor="#438DD5" style=filled]
 	}
 }
